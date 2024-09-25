@@ -1,0 +1,94 @@
+name: C++ Build and Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up CMake
+      - name: Install CMake
+        uses: jwlawson/actions-setup-cmake@v1
+        with:
+          cmake-version: '3.18.4'
+
+      # Set up dependencies (if any) using a package manager like apt-get
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake # valgrind clang-tidy
+
+      # Create build directory
+      - name: Create build directory
+        run: cmake -S . -B build
+
+      # Build the project
+      - name: Build project
+        run: cmake --build build
+
+      # Run the tests
+      - name: Run unit tests
+        run: |
+          cd build
+          ctest -C Debug --output-on-failure
+
+  # valgrind:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+
+  #     # Create build directory (ensure it’s built)
+  #     - name: Build project
+  #       run: |
+  #         cmake -S . -B build
+  #         cmake --build build
+
+  #     # Run tests with Valgrind for memory checking
+  #     - name: Run tests with Valgrind
+  #       run: |
+  #         cd build
+  #         ctest -C Debug --output-on-failure
+  #         valgrind --leak-check=full --error-exitcode=1 ./your_test_executable
+
+  # static-analysis:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+
+  #     # Perform static analysis using clang-tidy
+  #     - name: Run clang-tidy
+  #       run: |
+  #         cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+  #         clang-tidy -p build `find ./src -name "*.cpp"`
+
+  # format-check:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+
+  #     # Check code formatting (optional)
+  #     - name: Run clang-format check
+  #       run: |
+  #         sudo apt-get install -y clang-format
+  #         find ./src ./include -name '*.cpp' -o -name '*.h' | xargs clang-format -i
+  #         git diff --exit-code
