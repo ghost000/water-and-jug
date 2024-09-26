@@ -1,0 +1,47 @@
+@startuml Class Diagram
+' Interface representing the water jug solver problem
+interface WaterJugSolver {
+    + setJugs(vector<int> newCapacities) : void  ' Sets the capacities of the jugs
+    + solve(int targetAmount) : vector<string>   ' Solves the problem for the target amount
+}
+
+' Concrete BFS algorithm implementation to solve the water jug problem
+class BFSWaterJugSolver {
+    - vector<int> capacities  ' Stores the capacities of the jugs
+    + setJugs(vector<int> newCapacities) : void  ' Sets jug capacities after validation
+    + solve(int targetAmount) : vector<string>   ' Solves the problem and returns the steps
+    - isTargetAchieved(JugState state, int targetAmount) : bool  ' Checks if the target amount is reached
+    - createFillState(JugState currentState, size_t jugIndex) : JugState  ' Creates state after filling the jug
+    - createEmptyState(JugState currentState, size_t jugIndex) : JugState  ' Creates state after emptying the jug
+    - createPourState(JugState currentState, size_t fromJug, size_t toJug) : JugState  ' Creates state after pouring water between jugs
+    - generatePossibleNextStates(JugState currentState) : vector<JugState>  ' Generates all possible next states
+    - addNewStateToQueue(queue<JugState>& stateQueue, unordered_set<JugState, JugStateHash>& visitedStates, JugState newState) : void  ' Adds new state to BFS queue
+}
+
+' Helper class for validating jug capacities and checking if the target can be reached
+class Validator {
+    + validateJugs(vector<int> capacities) : void  ' Validates the given jug capacities
+    + canReachTarget(int target, vector<int> capacities) : bool  ' Checks if the target amount is reachable with the given jugs
+}
+
+' Structure representing the state of the jugs at any given moment
+struct JugState {
+    + vector<int> jugs   ' Current amount of water in each jug
+    + string steps   ' Steps that led to this state
+    + operator==(JugState other) : bool  ' Comparison operator for states
+}
+
+' Structure to hash JugState objects (required for unordered_set)
+class JugStateHash {
+    + operator()(JugState state) : size_t  ' Hash function for JugState objects
+}
+
+' Inheritance relationship between the interface and the implementation
+WaterJugSolver <|-- BFSWaterJugSolver
+
+' Usage relationship between BFSWaterJugSolver and Validator
+BFSWaterJugSolver ..> Validator : uses
+
+' JugState is hashed by JugStateHash
+JugStateHash ..> JugState : hashes
+@enduml

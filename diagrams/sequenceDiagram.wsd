@@ -1,0 +1,23 @@
+@startuml Sequence Diagram
+actor User
+participant "Main Program" as Main
+participant "BFSWaterJugSolver" as Solver
+participant "Validator" as Validator
+
+' User creates the solver and passes the jug capacities
+User -> Main: Create Solver
+Main -> Solver: setJugs(jugCapacities)
+Solver -> Validator: validateJugs(jugCapacities)
+Validator --> Solver: validation result
+
+' User requests the solver to solve the problem for a given water amount
+Main -> Solver: solve(targetAmount)
+Solver -> Validator: canReachTarget(targetAmount, jugCapacities)
+Validator --> Solver: target reachable?
+
+' Solver starts BFS algorithm to find the solution
+Solver -> Solver: BFS algorithm to find solution
+
+' Solver returns solution steps
+Solver --> Main: Return solution steps
+@enduml
