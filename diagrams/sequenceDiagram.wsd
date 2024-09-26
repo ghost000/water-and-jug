@@ -1,4 +1,14 @@
 @startuml Sequence Diagram
+
+' Color settings
+skinparam sequence {
+    ActorBorderColor #FF6347
+    LifeLineBorderColor Black
+    LifeLineBackgroundColor LightYellow
+    ArrowColor #008080
+    ParticipantBackgroundColor LightGreen
+}
+
 actor User
 participant "Main Program" as Main
 participant "BFSWaterJugSolver" as Solver
