@@ -117,5 +117,3 @@ The BFS algorithm is used to explore all possible states of the jugs until a sol
 3. **Usage**: Details how to run the solver, including an explanation of how the BFS algorithm works to solve the Water Jug Problem.
 4. **Testing**: Instructions on how to run the unit tests with `ctest` or individual test binaries.
 5. **Code Structure**: Contains UML diagrams (class, sequence, and detailed BFS) with integrated PlantUML URLs to render the diagrams online.
-
-This `README.md` should now serve as a comprehensive guide to your project, explaining everything from setup to usage, testing, and further improvements. Let me know if you'd like any additional changes!

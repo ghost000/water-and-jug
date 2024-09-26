@@ -54,15 +54,6 @@ TEST_F(BFSWaterJugSolverTest, NoSolution) {
     ASSERT_FALSE(result.empty());
 }
 
-// Test solver handling large number of states (abort condition)
-//TEST_F(BFSWaterJugSolverTest, SolveTooManyStates) {
-//    std::vector<int> hugeJugs = { 999999, 1000000 }; // Unrealistically large jugs to test space limitation
-//    solver.setJugs(hugeJugs);
-//    int target = 1;
-//    std::vector<std::string> result = solver.solve(target);
-//    ASSERT_EQ(result[0], "Solution space too large, aborting...");
-//}
-
 // Test edge case with no solution
 TEST_F(BFSWaterJugSolverTest, NoSolutionForImpossibleTarget) {
     int target = 11; // Impossible to get 11L with jugs 3, 6, 10
