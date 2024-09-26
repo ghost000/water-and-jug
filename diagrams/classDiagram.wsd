@@ -1,4 +1,13 @@
 @startuml Class Diagram
+
+' Define colors for different elements
+skinparam class {
+    BackgroundColor LightBlue
+    BorderColor Navy
+    ArrowColor Black
+    FontColor Black
+}
+
 ' Interface representing the water jug solver problem
 interface WaterJugSolver {
     + setJugs(vector<int> newCapacities) : void  ' Sets the capacities of the jugs

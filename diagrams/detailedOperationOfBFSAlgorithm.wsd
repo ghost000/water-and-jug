@@ -1,4 +1,14 @@
 @startuml BFS Algorithm Detailed Sequence Diagram
+
+' Color settings
+skinparam sequence {
+    ActorBorderColor #FF6347
+    LifeLineBorderColor Black
+    LifeLineBackgroundColor LightYellow
+    ArrowColor #008080
+    ParticipantBackgroundColor LightGreen
+}
+
 actor User
 participant "BFSWaterJugSolver" as Solver
 participant "JugState"
@@ -17,6 +27,7 @@ Solver -> Visited: Mark initial state as visited
 Solver -> Solver: While (queue is not empty)
 Solver -> Queue: Pop current state
 Solver -> Solver: isTargetAchieved(currentState, targetAmount)?
+
 alt if target achieved
     Solver --> User: Return steps (solution found)
 else if target not achieved
