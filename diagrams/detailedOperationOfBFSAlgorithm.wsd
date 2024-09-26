@@ -1,0 +1,36 @@
+@startuml BFS Algorithm Detailed Sequence Diagram
+actor User
+participant "BFSWaterJugSolver" as Solver
+participant "JugState"
+participant "queue<JugState>" as Queue
+participant "unordered_set<JugState>" as Visited
+
+' User requests the solver to solve the problem
+User -> Solver: solve(targetAmount)
+
+' BFS algorithm begins by initializing the starting state (all jugs empty)
+Solver -> JugState: Create initial state (all jugs empty)
+Solver -> Queue: Add initial state to BFS queue
+Solver -> Visited: Mark initial state as visited
+
+' BFS processes states in a loop
+Solver -> Solver: While (queue is not empty)
+Solver -> Queue: Pop current state
+Solver -> Solver: isTargetAchieved(currentState, targetAmount)?
+alt if target achieved
+    Solver --> User: Return steps (solution found)
+else if target not achieved
+    ' Generating possible new states
+    Solver -> Solver: generatePossibleNextStates(currentState)
+    loop For each nextState
+        Solver -> Visited: Has nextState been visited?
+        alt if not visited
+            Solver -> Queue: Add nextState to queue
+            Solver -> Visited: Mark nextState as visited
+        else if visited
+            ' Ignore state
+        end
+    end
+end
+Solver --> User: Return "No solution found"
+@enduml
