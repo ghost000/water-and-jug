@@ -4,6 +4,7 @@
 #include <format>
 #include <ranges>
 #include <algorithm>
+#include <numeric>
 
 // Set jug capacities after validating them
 void BFSWaterJugSolver::setJugs(const std::vector<int>& newCapacities) {
@@ -13,7 +14,14 @@ void BFSWaterJugSolver::setJugs(const std::vector<int>& newCapacities) {
 
 // Check if any jug in the current state contains the target amount of water
 bool BFSWaterJugSolver::isTargetAchieved(const JugState& state, int targetAmount) const {
-    return std::ranges::any_of(state.jugs, [targetAmount](int water) { return water == targetAmount; });
+    // Check if we have exactly target in one of the jugs
+    if (std::ranges::any_of(state.jugs, [targetAmount](int water) { return water == targetAmount; })) {
+        return true;
+    }
+
+    // Check if the sum of water in several jugs gives the target
+    int totalWater = std::accumulate(state.jugs.begin(), state.jugs.end(), 0);
+    return totalWater == targetAmount;
 
 }
 
@@ -21,7 +29,7 @@ bool BFSWaterJugSolver::isTargetAchieved(const JugState& state, int targetAmount
 JugState BFSWaterJugSolver::createFillState(const JugState& currentState, size_t jugIndex) const {
     JugState filledState = currentState;
     filledState.jugs[jugIndex] = capacities[jugIndex]; // Fill the jug to its max capacity
-    filledState.steps += std::format("\nFill jug {} ({}L)", jugIndex, capacities[jugIndex]);
+    filledState.steps += std::format("\nFill jug {} ({}L)", jugIndex+1, capacities[jugIndex]);
     return filledState;
 }
 
@@ -29,7 +37,7 @@ JugState BFSWaterJugSolver::createFillState(const JugState& currentState, size_t
 JugState BFSWaterJugSolver::createEmptyState(const JugState& currentState, size_t jugIndex) const {
     JugState emptiedState = currentState;
     emptiedState.jugs[jugIndex] = 0; // Empty the jug
-    emptiedState.steps += std::format("\nEmpty jug {}", jugIndex);
+    emptiedState.steps += std::format("\nEmpty jug {}", jugIndex+1);
     return emptiedState;
 }
 
@@ -39,7 +47,7 @@ JugState BFSWaterJugSolver::createPourState(const JugState& currentState, size_t
     int pourAmount = std::min(currentState.jugs[fromJug], capacities[toJug] - currentState.jugs[toJug]); // Max amount that can be poured
     pouredState.jugs[fromJug] -= pourAmount;
     pouredState.jugs[toJug] += pourAmount;
-    pouredState.steps += std::format("\nPour {}L from jug {} to jug {}", pourAmount, fromJug, toJug);
+    pouredState.steps += std::format("\nPour {}L from jug {} to jug {}", pourAmount, fromJug+1, toJug+1);
     return pouredState;
 }
 
@@ -84,7 +92,6 @@ std::vector<std::string> BFSWaterJugSolver::solve(int targetAmount) const {
     if (!Validator::canReachTarget(targetAmount, capacities)) {
         return { "Target cannot be reached with the given jug capacities." };
     }
-
     // Initialize visited states and BFS queue
     std::unordered_set<JugState, JugStateHash> visitedStates;
     std::queue<JugState> stateQueue;
@@ -94,7 +101,7 @@ std::vector<std::string> BFSWaterJugSolver::solve(int targetAmount) const {
     stateQueue.push(initialState);
     visitedStates.insert(initialState);
 
-    constexpr size_t MAX_VISITED_STATES = 10000; // Limit to avoid infinite search
+    constexpr size_t MAX_VISITED_STATES = 1000; // Limit to avoid infinite search
 
     // BFS search loop
     while (!stateQueue.empty()) {
