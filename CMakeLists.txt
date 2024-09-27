@@ -14,21 +14,6 @@ endif()
 # Define the project name and type (C++ project)
 project("water-and-jug")
 
-# Set code quality and security flags
-
-# Enable common warnings to help catch potential issues in the code.
-# The -Wall flag enables a wide range of warning messages, which can help identify areas 
-# of the code that may need attention or improvement.
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-
-# Check if the compiler is Microsoft Visual Studio (MSVC).
-#if(MSVC)
-  # /W4 sets the warning level to the highest level in MSVC (Level 4).
-  # This will enable all warnings including those about usage of deprecated features,
-  # potential bugs, and other areas of concern in the code.
- # add_compile_options(/W4)
-#endif()
-
 # Fetch GoogleTest using FetchContent
 # GoogleTest is required for unit testing. Using FetchContent ensures that we always 
 # download and use a specific version of GoogleTest (1.15.2 in this case) to maintain consistency across environments.
@@ -44,6 +29,10 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 # Make GoogleTest available for this project
 FetchContent_MakeAvailable(googletest)
+
+# Enable unit testing support
+# This sets up testing using CMake’s testing infrastructure, which integrates well with GoogleTest.
+enable_testing()
 
 # Create the main project executable (excluding test files)
 # This includes both the solver logic (BFSWaterJugSolver) and validation (Validator) functionality.
@@ -66,10 +55,6 @@ target_include_directories(water-and-jug PRIVATE "${CMAKE_SOURCE_DIR}/include")
 set_property(TARGET water-and-jug PROPERTY CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)  # Ensures that the project does not fall back to an older standard
-
-# Enable unit testing support
-# This sets up testing using CMake’s testing infrastructure, which integrates well with GoogleTest.
-enable_testing()
 
 # Include GoogleTest's integration with CMake
 include(GoogleTest)

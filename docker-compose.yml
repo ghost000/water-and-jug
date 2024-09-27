@@ -1,0 +1,24 @@
+services:
+  build:
+    build:
+      context: .
+      target: builder
+    volumes:
+      - ./build:/app/build
+    command: ["/bin/true"]
+
+  test:
+    build:
+      context: .
+      target: tester
+
+  run:
+    build:
+      context: .
+      target: runner
+    stdin_open: true
+    tty: true
+    environment:
+      - TARGET_VOLUME=5
+    volumes:
+      - ./data:/app/data
