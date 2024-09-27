@@ -11,9 +11,6 @@ services:
     build:
       context: .
       target: tester
-    volumes:
-      - ./build:/app/build
-    command: ctest --output-on-failure
 
   run:
     build:

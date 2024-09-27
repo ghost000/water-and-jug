@@ -12,13 +12,15 @@ RUN apt-get update && apt-get install -y \
 # Set the working directory
 WORKDIR /app
 
+RUN rm -rf build
+
 # Copy project files
 COPY . .
 
 # Create a build directory and compile the project
 RUN mkdir build && cd build && \
     cmake -DCMAKE_BUILD_TYPE=Release .. && \
-    make
+    cmake --build .
 
 # Stage 2: Test stage
 FROM builder AS tester

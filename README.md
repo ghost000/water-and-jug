@@ -36,13 +36,19 @@ The project is built using **C++20** and utilizes modern C++ standards to ensure
 
 ### Build Requirements
 
-To build this project, you will need the following tools installed:
+To build this project nativr, you will need the following tools installed:
 
 - **CMake** (version 3.8 or higher)
 - **C++20** compatible compiler (e.g., GCC 10+, Clang 10+, MSVC)
 - **GoogleTest** (automatically fetched by CMake)
 
+	or
+
+- **Docker** and **Docker Compose**
+
 ### Build Instructions
+
+#### Native
 
 1. Clone the repository:
    ```bash
@@ -64,9 +70,19 @@ To build this project, you will need the following tools installed:
    ```
  This will compile the solver and create executables for both the main program and the test cases.
 
+ #### Via Docker compose
+
+ 1. Build Docker images:
+   ```bash 
+   docker-compose build
+   ```
+
 ## Usage
 
 ### Running the Program
+
+#### Native
+
 After building the project, you can run the main executable:
    ```bash 
    ./water-and-jug
@@ -74,12 +90,21 @@ After building the project, you can run the main executable:
 
 This will prompt you to enter the capacities of the jugs and the target amount of water to solve the problem.
 
+ #### Via Docker compose
+
+ 1. Run the main executable via Docker:
+   ```bash 
+   docker-compose run run
+   ```
+
 ### Solving the Problem
 The program works by simulating the process of filling, emptying, and pouring water between jugs until the target amount is reached. If a solution is found, the program will output the sequence of steps to achieve the target. If no solution exists, it will inform you that the target is unreachable.
 
 ## Testing
 
 ### Running Unit Tests
+
+#### Native
 
 The project includes unit tests to validate the core components (Validator and BFSWaterJugSolver). 
 To run the tests, execute the following command after building the project:
@@ -96,6 +121,12 @@ Alternatively, you can run individual test executables:
    ./BFSWaterJugSolverTests
    ```
 
+#### Via Docker compose
+
+ 1. Run unit tests via Docker compose:
+   ```bash 
+   docker-compose run test
+   ```
 
 ## Code Structure
 

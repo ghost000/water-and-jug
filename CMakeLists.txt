@@ -108,6 +108,3 @@ gtest_discover_tests(BFSWaterJugSolverTests)
 # Improvements or additional steps:
 # - We could add sanitizers (e.g., AddressSanitizer, UndefinedBehaviorSanitizer) to catch runtime bugs during development.
 # - It might be beneficial to set up different build configurations (e.g., Release, Debug) with tailored flags for each.
-
-message(STATUS "GoogleTest source dir: ${gtest_SOURCE_DIR}")
-message(STATUS "GoogleTest binary dir: ${gtest_BINARY_DIR}")
