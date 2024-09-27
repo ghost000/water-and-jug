@@ -19,11 +19,13 @@ struct JugStateHash {
 
     // Generates a hash value for a given JugState
     size_t operator()(const JugState& state) const {
-        size_t hashValue = 0; // Initial hash value
 
-        // Combine hashes of each jug's water amount using XOR to generate a unique hash
+        size_t hashValue = 0;
+        std::hash<int> hasher;
+
+        // Combine hashes using a more advanced approach to avoid collisions
         for (int jug : state.jugs) {
-            hashValue ^= std::hash<int>()(jug);
+            hashValue ^= hasher(jug) + 0x9e3779b9 + (hashValue << 6) + (hashValue >> 2);
         }
         return hashValue;
     }

@@ -1,30 +1,24 @@
 #include "include/BFSWaterJugSolver.h"
 #include <iostream>
 #include <vector>
+#include <memory>
 
 int main() {
     // Define capacities of the jugs (3L, 6L, 10L)
     std::vector<int> capacities = { 3, 6, 10 };
-    int target;
-
-    std::cout << "Enter the target amount of water (1-19): ";
-    std::cin >> target;
 
     // Initialize the solver
-    BFSWaterJugSolver solver;
-    solver.setJugs(capacities);
+    std::unique_ptr<WaterJugSolver> solver = std::make_unique<BFSWaterJugSolver>();
+    solver->setJugs(capacities);
 
-    // Find solution
-    std::vector<std::string> result = solver.solve(target);
 
-    // Output the solution steps
-    if (!result.empty()) {
+    for (int target = 1; target <= 19; ++target) {
+        std::vector<std::string> result = solver->solve(target);
+        std::cout << "Target: " << target << "L\n";
         for (const auto& step : result) {
-            std::cout << step << std::endl;
+            std::cout << step << '\n';
         }
-    }
-    else {
-        std::cout << "No solution found or target is unreachable." << std::endl;
+        std::cout << "--------------------------\n";
     }
 
     return 0;
